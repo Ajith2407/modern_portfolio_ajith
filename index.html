@@ -75,13 +75,154 @@
     <title>Ajithkumar D - Portfolio</title>
 </head>
 <body>
+
+<!-- Add this right after the <body> tag -->
+<header x-data="{ open: false }" class="fixed w-full z-50 bg-white/90 backdrop-blur-sm shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16 md:h-20">
+            <!-- Logo -->
+            <a href="#home" class="text-2xl font-bold text-slate-800">
+                <span class="text-gradient">Ajithkumar</span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="underline-animation text-slate-700 hover:text-primary font-medium">Home</a>
+                <a href="#about" class="underline-animation text-slate-700 hover:text-primary font-medium">About</a>
+                <a href="#education" class="underline-animation text-slate-700 hover:text-primary font-medium">Education</a>
+                <a href="#projects" class="underline-animation text-slate-700 hover:text-primary font-medium">Projects</a>
+                <a href="#certifications" class="underline-animation text-slate-700 hover:text-primary font-medium">Certifications</a>
+                <a href="#contact" class="underline-animation text-slate-700 hover:text-primary font-medium">Contact</a>
+            </nav>
+            
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button @click="open = !open" class="text-slate-700 hover:text-primary focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M4 6h16M4 12h16M4 18h16" x-show="!open"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M6 18L18 6M6 6l12 12" x-show="open" style="display: none;"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="md:hidden" x-show="open" x-transition:enter="transition ease-out duration-100" 
+         x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" 
+         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100 scale-100" 
+         x-transition:leave-end="opacity-0 scale-95" style="display: none;">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
+            <a href="#home" @click="open = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Home</a>
+            <a href="#about" @click="open = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">About</a>
+            <a href="#education" @click="open = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Education</a>
+            <a href="#projects" @click="open = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Projects</a>
+            <a href="#certifications" @click="open = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Certifications</a>
+            <a href="#contact" @click="open = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Contact</a>
+        </div>
+    </div>
+</header>
+
+<!-- Add this to your existing style section -->
+<style>
+    /* Smooth scroll behavior */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Navbar animation */
+    header {
+        transition: all 0.3s ease;
+    }
+    
+    /* Scrolled state for navbar */
+    .scrolled {
+        background-color: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+</style>
+
+<!-- Add this script for navbar scroll effect -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('header');
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                header.classList.remove('scrolled');
+                return;
+            }
+            
+            if (currentScroll > lastScroll && !header.classList.contains('scrolled')) {
+                // Scroll down
+                header.classList.add('scrolled');
+            } else if (currentScroll < lastScroll && header.classList.contains('scrolled')) {
+                // Scroll up
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+    });
+</script>
+
     <!-- Hero Section -->
     <section id="home" class="min-h-screen flex items-center gradient-bg text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-0">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="animate-fadeIn">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4">Hi, I'm <span class="text-gradient">Ajithkumar D</span></h1>
-                    <p class="text-xl text-slate-300 mb-8">WEB DEVELOPMENT</p>
+                    <p class="text-xl mb-8">
+    <span class="inline-block min-w-[200px]">
+        <span 
+            x-data="{
+                titles: ['WEB DEVELOPMENT', 'Angular Developer', 'UI/UX Designer'],
+                currentIndex: 0,
+                currentTitle: '',
+                typing: true,
+                typingSpeed: 100,
+                deletingSpeed: 50,
+                pauseBetween: 2000,
+                
+                init() {
+                    this.typeTitle();
+                },
+                
+                typeTitle() {
+                    let title = this.titles[this.currentIndex];
+                    let currentLength = this.currentTitle.length;
+                    
+                    if (this.typing) {
+                        this.currentTitle = title.substring(0, currentLength + 1);
+                        if (this.currentTitle === title) {
+                            this.typing = false;
+                            setTimeout(() => this.typeTitle(), this.pauseBetween);
+                        } else {
+                            setTimeout(() => this.typeTitle(), this.typingSpeed);
+                        }
+                    } else {
+                        this.currentTitle = title.substring(0, currentLength - 1);
+                        if (this.currentTitle === '') {
+                            this.typing = true;
+                            this.currentIndex = (this.currentIndex + 1) % this.titles.length;
+                            setTimeout(() => this.typeTitle(), 500);
+                        } else {
+                            setTimeout(() => this.typeTitle(), this.deletingSpeed);
+                        }
+                    }
+                }
+            }" 
+            class="text-gradient"
+            x-text="currentTitle"
+        ></span>
+        <span class="inline-block w-1 h-6 bg-gradient-to-b from-primary to-secondary animate-pulse" x-show="typing"></span>
+    </span>
+</p>
                     <p class="mb-8 text-slate-300">Angular Developer with 1+ years of experience in web development and technical support. Skilled in building responsive SPAs using Angular, TypeScript, and REST APIs.</p>
                     <div class="flex flex-wrap gap-4">
                         <a href="#projects" class="bg-primary hover:bg-secondary text-white font-medium py-3 px-6 rounded-full transition duration-300 transform hover:scale-105">
@@ -218,6 +359,34 @@
             </div>
         </div>
     </section>
+
+    <!-- Education Section -->
+<section id="education" class="section-padding bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">My <span class="text-primary">Education</span></h2>
+            <div class="w-20 h-1 bg-secondary mx-auto"></div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-10">
+            <!-- M.Sc Education Block -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
+                <h3 class="text-xl font-semibold text-primary mb-2">M.Sc in Computer Science</h3>
+                <p class="text-slate-600 mb-1">Arignar Anna Government Arts College, Villupuram</p>
+                <p class="text-sm text-slate-500">2019 – 2021</p>
+                <p class="text-sm font-medium text-slate-700 mt-2">Grade: <span class="text-black">80%</span></p>
+            </div>
+
+            <!-- B.Sc Education Block -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition duration-300">
+                <h3 class="text-xl font-semibold text-primary mb-2">B.Sc in Computer Science</h3>
+                <p class="text-slate-600 mb-1">SSBS Tamil Arts and Science College, Mailam</p>
+                <p class="text-sm text-slate-500">2016 – 2019</p>
+                <p class="text-sm font-medium text-slate-700 mt-2">Grade: <span class="text-black">72%</span></p>
+            </div>
+        </div>
+    </div>
+</section>
 
     <!-- Projects Section -->
     <section id="projects" class="section-padding bg-slate-50">
